@@ -13,7 +13,8 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     prismic = require('express-prismic').Prismic,
-    configuration = require('./prismic-configuration').Configuration;
+    configuration = require('./prismic-configuration').Configuration,
+    social = require('./social');
 
 
 var app = express();
@@ -46,8 +47,26 @@ function handleError(err, req, res) {
 }
 
 // Routes
+
+function socialPluginEnabled(doc) {
+  var socialEnabled = doc.getText(doc.type + '.social_cards_enabled');
+  return (socialEnabled == 'Enabled');
+}
+
 app.route('/').get(function(req, res){
-  res.render('index');
+  var p = prismic.withContext(req, res);
+  p.getByUID('social', 'social-cards-starter', function (err, doc) {
+    if(err) return handleError(err, req, res)
+    var pageUrl = social.pageUrlFromRequest(req)
+    res.render('social', {
+      doc: doc,
+      pageUrl: pageUrl(doc),
+      helpers: {
+        socialPluginEnabled:socialPluginEnabled(doc),
+        social: social
+      }
+    });
+  });
 });
 
 app.route('/preview').get(prismic.preview);

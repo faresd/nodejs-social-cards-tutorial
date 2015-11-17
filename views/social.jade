@@ -1,0 +1,63 @@
+mixin socialMeta(doc)
+    //- Open Graph data (facebook & linkedin)
+    mixin generalCard
+        meta(property="og:title" content=helpers.social.generalCardTitle(doc))
+        meta(property="og:type", content="article")
+        meta(property="og:url", content=pageUrl)
+        meta(property="og:image", content=helpers.social.generalCardImage(doc))
+        meta(property="og:description", content=helpers.social.generalCardDescription(doc))
+        meta(property="article:section", content="Article Section")
+
+    mixin productCard
+        meta(property="og:title" content=helpers.social.productCardTitle(doc))
+        meta(property="og:description", content=helpers.social.productCardDescription(doc))
+        meta(property="og:image", content=helpers.social.productCardSingleImage(doc))
+        meta(property="og:type", content="product")
+        meta(property="og:price:amount", content=helpers.social.productCardAmount(doc))
+        meta(property="og:price:currency", content=helpers.social.productCardCurrency(doc))
+
+    mixin placeCard
+        meta(property="og:title" content=helpers.social.placeCardTitle(doc))
+        meta(property="og:type", content="place")
+        meta(property="og:description", content=helpers.social.placeCardDescription(doc))
+        meta(property="place:location:latitude", content=helpers.social.placeCardLatitude(doc))
+        meta(property="place:location:longitude", content=helpers.social.placeCardLongitude(doc))
+
+    meta(name="p:domain_verify", content="48ae95a94ba8fd30f31a003069eeff53")
+    if helpers.social.isShareReady(doc)
+        if helpers.social.openGraphCardExists(doc)
+            case helpers.social.openGraphCardType(doc)
+                when 'general_card'
+                    +generalCard
+                when 'product_card'
+                    +productCard
+                when 'place_card'
+                    +placeCard
+
+
+mixin social(doc)
+    div.social-share-widgets
+        span.social-share-button(onclick="popUp=window.open('https://www.facebook.com/sharer/sharer.php?u=#{pageUrl}', 'popupwindow', 'scrollbars=yes,width=800,height=400');popUp.focus();return false")
+            i.icon-facebook
+        span.social-share-button(onclick="popUp=window.open('https://plus.google.com/share?url=#{pageUrl}', 'popupwindow', 'scrollbars=yes,width=800,height=400');popUp.focus();return false")
+            i.icon-google-plus
+        span.social-share-button(onclick="popUp=window.open('https://twitter.com/intent/tweet?url=#{pageUrl}', 'popupwindow', 'scrollbars=yes,width=800,height=400');popUp.focus();return false")
+            i.icon-twitter
+        span.social-share-button(onclick="popUp=window.open('https://www.linkedin.com/shareArticle?mini=true&url=#{pageUrl}', 'popupwindow', 'scrollbars=yes,width=800,height=400');popUp.focus();return false")
+            i.icon-linkedin
+        span.social-share-button(onclick="popUp=window.open('http://pinterest.com/pin/create/link/?url=#{pageUrl + '&media=' + doc.getFirstImage().getView('main').url + '&description=' + doc.getFirstParagraph().text}', 'popupwindow', 'scrollbars=yes,width=800,height=400');popUp.focus();return false")
+            i.icon-pinterest
+
+extends ./layout.jade
+head
+    +socialMeta(doc)
+block body
+    div.welcome
+        img(src=doc.getImage('social.image').url, class='star')
+        != doc.getStructuredText('social.title').asHtml(ctx.linkResolver)
+        != doc.getStructuredText('social.description').asHtml(ctx.linkResolver)
+        if (helpers.socialPluginEnabled)
+            +social(doc)
+
+
+

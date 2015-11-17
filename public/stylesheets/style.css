@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'StarterKit';
+    src: url('../fonts/starterkit.eot') format('eot');
+    src : url('../fonts/starterkit.woff') format('woff'),
+    url('../fonts/starterkit.svg#abcd') format('svg'),
+    url('../fonts/starterkit.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html {
     font-size: 100%;
 }
@@ -44,4 +54,64 @@ h1 {
 .welcome p, .welcome a {
     letter-spacing: 0.8;
     line-height: 2rem;
+}
+
+/*
+    Social cards
+*/
+
+.social-share-widgets {
+    width : auto;
+    height : auto;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.social-share-button i {
+    line-height: 1.8rem;
+}
+
+.social-share-button {
+    cursor : pointer ;
+    color: white;
+    text-align: center;
+    width: 2rem;
+    height: 2rem;
+    display: inline-block;
+    color: #AAAAAA;
+    border: 1px solid #AAAAAA;
+    border-radius: 50%;
+    box-sizing: border-box;
+    font-size: 1rem;
+    margin: 0 0.2rem;
+}
+
+.icon-facebook::before {
+    font-family: 'StarterKit';
+    content: '\e00B';
+}
+
+.icon-twitter::before {
+    font-family: 'StarterKit';
+    content: '\e00E';
+}
+
+.icon-linkedin::before {
+    font-family: 'StarterKit';
+    content: '\e00D';
+}
+
+.icon-google-plus::before {
+    font-family: 'StarterKit';
+    content: '\e00C';
+}
+
+.icon-email::before {
+    font-family: 'StarterKit';
+    content: '\e00F';
+}
+
+.icon-pinterest::before {
+    font-family: 'StarterKit';
+    content: '\e011';
 }
