@@ -1,38 +1,39 @@
 mixin socialMeta(doc)
     //- Open Graph data (facebook & linkedin)
-    mixin generalCard
-        meta(property="og:title" content=helpers.social.generalCardTitle(doc))
+    mixin generalCard(slice)
+        meta(property="og:title" content=slice.get('card_title') ? slice.get('card_title').value : doc.getFirstTitle())
         meta(property="og:type", content="article")
         meta(property="og:url", content=pageUrl)
-        meta(property="og:image", content=helpers.social.generalCardImage(doc))
-        meta(property="og:description", content=helpers.social.generalCardDescription(doc))
+        meta(property="og:image", content=slice.get('card_image') && slice.get('card_image').getView("main") ? slice.get('card_image').getView("main").url : doc.getFirstImage().getView("main").url)
+        meta(property="og:description", content= slice.get('card_description') ? slice.get('card_description').value : doc.getFirstParagraph().text)
         meta(property="article:section", content="Article Section")
 
-    mixin productCard
-        meta(property="og:title" content=helpers.social.productCardTitle(doc))
-        meta(property="og:description", content=helpers.social.productCardDescription(doc))
-        meta(property="og:image", content=helpers.social.productCardSingleImage(doc))
+    mixin productCard(slice)
+        meta(property="og:title" content=slice.get('card_title') ? slice.get('card_title').value :doc.getFirstTitle())
+        meta(property="og:description", content= slice.get('card_description') ? slice.get('card_description').value : doc.getFirstParagraph().text)
+        meta(property="og:image", content= slice.get('card_image0') && slice.get('card_image0').getView("main") ? slice.get('card_image0').getView("main").url : doc.getFirstImage().getView("main").url)
         meta(property="og:type", content="product")
-        meta(property="og:price:amount", content=helpers.social.productCardAmount(doc))
-        meta(property="og:price:currency", content=helpers.social.productCardCurrency(doc))
+        meta(property="og:price:amount", content=slice.get('card_amount') ? slice.get('card_amount').value : '')
+        meta(property="og:price:currency", content=slice.get('card_currency') ? slice.get('card_currency').value : '')
 
-    mixin placeCard
-        meta(property="og:title" content=helpers.social.placeCardTitle(doc))
+    mixin placeCard(slice)
+        meta(property="og:title" content= slice.get('card_title') ? slice.get('card_title').value : doc.getFirstTitle())
         meta(property="og:type", content="place")
-        meta(property="og:description", content=helpers.social.placeCardDescription(doc))
-        meta(property="place:location:latitude", content=helpers.social.placeCardLatitude(doc))
-        meta(property="place:location:longitude", content=helpers.social.placeCardLongitude(doc))
+        meta(property="og:description", content= slice.get('card_description') ? slice.get('card_description').value : doc.getFirstParagraph().text)
+        meta(property="place:location:latitude",content = slice.get('coordinates') ? slice.get('coordinates').latitude: '48.8567')
+        meta(property="place:location:longitude", content= slice.get('coordinates') ? slice.get('coordinates').longitude: '2.3508')
 
     meta(name="p:domain_verify", content="48ae95a94ba8fd30f31a003069eeff53")
-    if helpers.social.isShareReady(doc)
-        if helpers.social.openGraphCardExists(doc)
-            case helpers.social.openGraphCardType(doc)
-                when 'general_card'
-                    +generalCard
-                when 'product_card'
-                    +productCard
-                when 'place_card'
-                    +placeCard
+    - var socialSlices = doc.getSliceZone(doc.type + '.social').slices
+    if (socialSlices && socialSlices.length > 0)
+       each slice in socialSlices
+           case slice.sliceType
+               when 'general_card'
+                   +generalCard(slice.value)
+               when 'product_card'
+                   +productCard(slice.value)
+               when 'place_card'
+                   +placeCard(slice.value)
 
 
 mixin social(doc)

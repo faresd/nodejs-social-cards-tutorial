@@ -57,15 +57,19 @@ app.route('/').get(function(req, res){
   var p = prismic.withContext(req, res);
   p.getByUID('social', 'social-cards-starter', function (err, doc) {
     if(err) return handleError(err, req, res)
-    var pageUrl = social.pageUrlFromRequest(req)
-    res.render('social', {
-      doc: doc,
-      pageUrl: pageUrl(doc),
-      helpers: {
-        socialPluginEnabled:socialPluginEnabled(doc),
-        social: social
-      }
-    });
+    if(!doc) {
+      res.status(404).send("404 not found");
+    } else {
+      var pageUrl = social.pageUrlFromRequest(req)
+      res.render('social', {
+        doc: doc,
+        pageUrl: pageUrl(doc),
+        helpers: {
+          socialPluginEnabled:socialPluginEnabled(doc),
+          social: social
+        }
+      });
+    }
   });
 });
 
