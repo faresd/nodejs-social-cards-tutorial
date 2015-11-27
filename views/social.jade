@@ -1,39 +1,41 @@
 mixin socialMeta(doc)
     //- Open Graph data (facebook & linkedin)
-    mixin generalCard(slice)
-        meta(property="og:title" content=slice.get('card_title') ? slice.get('card_title').value : doc.getFirstTitle())
+    mixin generalCard(gDoc)
+        meta(property="og:title" content=gDoc.get('card_title').value)
         meta(property="og:type", content="article")
         meta(property="og:url", content=pageUrl)
-        meta(property="og:image", content=slice.get('card_image') && slice.get('card_image').getView("main") ? slice.get('card_image').getView("main").url : doc.getFirstImage().getView("main").url)
-        meta(property="og:description", content= slice.get('card_description') ? slice.get('card_description').value : doc.getFirstParagraph().text)
+        meta(property="og:image", content=gDoc.get('card_image') && gDoc.get('card_image').getView("main") ? gDoc.get('card_image').getView("main").url : doc.getFirstImage().getView("main").url)
+        meta(property="og:description", content= gDoc.get('card_description') ? gDoc.get('card_description').value : doc.getFirstParagraph().text)
         meta(property="article:section", content="Article Section")
 
-    mixin productCard(slice)
-        meta(property="og:title" content=slice.get('card_title') ? slice.get('card_title').value :doc.getFirstTitle())
-        meta(property="og:description", content= slice.get('card_description') ? slice.get('card_description').value : doc.getFirstParagraph().text)
-        meta(property="og:image", content= slice.get('card_image0') && slice.get('card_image0').getView("main") ? slice.get('card_image0').getView("main").url : doc.getFirstImage().getView("main").url)
+    mixin productCard(gDoc)
+        meta(property="og:title" content=gDoc.get('card_title') ? gDoc.get('card_title').value :doc.getFirstTitle())
+        meta(property="og:description", content= gDoc.get('card_description') ? gDoc.get('card_description').value : doc.getFirstParagraph().text)
+        meta(property="og:image", content= gDoc.get('card_image0') && gDoc.get('card_image0').getView("main") ? gDoc.get('card_image0').getView("main").url : doc.getFirstImage().getView("main").url)
         meta(property="og:type", content="product")
-        meta(property="og:price:amount", content=slice.get('card_amount') ? slice.get('card_amount').value : '')
-        meta(property="og:price:currency", content=slice.get('card_currency') ? slice.get('card_currency').value : '')
+        meta(property="og:price:amount", content=gDoc.get('card_amount') ? gDoc.get('card_amount').value : '')
+        meta(property="og:price:currency", content=gDoc.get('card_currency') ? gDoc.get('card_currency').value : '')
 
-    mixin placeCard(slice)
-        meta(property="og:title" content= slice.get('card_title') ? slice.get('card_title').value : doc.getFirstTitle())
+    mixin placeCard(gDoc)
+        meta(property="og:title" content= gDoc.get('card_title') ? gDoc.get('card_title').value : doc.getFirstTitle())
         meta(property="og:type", content="place")
-        meta(property="og:description", content= slice.get('card_description') ? slice.get('card_description').value : doc.getFirstParagraph().text)
-        meta(property="place:location:latitude",content = slice.get('coordinates') ? slice.get('coordinates').latitude: '48.8567')
-        meta(property="place:location:longitude", content= slice.get('coordinates') ? slice.get('coordinates').longitude: '2.3508')
+        meta(property="og:description", content= gDoc.get('card_description') ? gDoc.get('card_description').value : doc.getFirstParagraph().text)
+        meta(property="place:location:latitude",content = gDoc.get('coordinates') ? gDoc.get('coordinates').latitude: '48.8567')
+        meta(property="place:location:longitude", content= gDoc.get('coordinates') ? gDoc.get('coordinates').longitude: '2.3508')
 
     meta(name="p:domain_verify", content="48ae95a94ba8fd30f31a003069eeff53")
     - var socialSlices = doc.getSliceZone(doc.type + '.social').slices
     if (socialSlices && socialSlices.length > 0)
        each slice in socialSlices
+           //- Get first groupDoc in group as it is repeat=false.
+           - var firstGroupDoc = slice.value.toArray()[0]
            case slice.sliceType
                when 'general_card'
-                   +generalCard(slice.value)
+                   +generalCard(firstGroupDoc)
                when 'product_card'
-                   +productCard(slice.value)
+                   +productCard(firstGroupDoc)
                when 'place_card'
-                   +placeCard(slice.value)
+                   +placeCard(firstGroupDoc)
 
 
 mixin social(doc)
@@ -51,7 +53,8 @@ mixin social(doc)
 
 extends ./layout.jade
 head
-    +socialMeta(doc)
+    block meta
+        +socialMeta(doc)
 block body
     div.welcome
         img(src=doc.getImage('social.image').url, class='star')
