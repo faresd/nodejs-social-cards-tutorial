@@ -26,10 +26,10 @@ mixin socialMeta(doc)
     meta(name="p:domain_verify", content="48ae95a94ba8fd30f31a003069eeff53")
     - var socialSlices = doc.getSliceZone(doc.type + '.social').slices
     if (socialSlices && socialSlices.length > 0)
-       each slice in socialSlices
+           //- Get first slice only, as the code support only one card
            //- Get first groupDoc in group as it is repeat=false.
-           - var firstGroupDoc = slice.value.toArray()[0]
-           case slice.sliceType
+           - var firstGroupDoc = socialSlices[0].value.toArray()[0]
+           case socialSlices[0].sliceType
                when 'general_card'
                    +generalCard(firstGroupDoc)
                when 'product_card'
