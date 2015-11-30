@@ -1,0 +1,172 @@
+{
+  "Get Started" : {
+    "uid" : {
+      "type" : "UID",
+      "config" : {
+        "placeholder" : "UID"
+      }
+    },
+    "image" : {
+      "type" : "Image"
+    },
+    "title" : {
+      "type" : "StructuredText",
+      "config" : {
+        "single" : "heading1",
+        "placeholder" : "Title..."
+      }
+    },
+    "description" : {
+      "type" : "StructuredText",
+      "config" : {
+        "multi" : "paragraph,em,strong,hyperlink",
+        "placeholder" : "Description..."
+      }
+    }
+  },
+  "Social Cards" : {
+    "social_cards_enabled" : {
+      "type" : "Select",
+      "fieldset" : "Social Sharing",
+      "config" : {
+        "placeholder" : "Disable",
+        "label" : "Enable Social Buttons",
+        "options" : [ "Enabled" ]
+      }
+    },
+    "social" : {
+      "fieldset" : "Custom Social Cards...",
+      "type" : "Slices",
+      "config" : {
+        "choices" : {
+          "general_card" : {
+            "type" : "Group",
+            "fieldset" : "General Card",
+            "config" : {
+              "repeat" : false,
+              "fields" : {
+                "card_title" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Title"
+                  }
+                },
+                "card_description" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Description"
+                  }
+                },
+                "card_image" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Image"
+                  }
+                }
+              }
+            }
+          },
+          "product_card" : {
+            "type" : "Group",
+            "fieldset" : "Product Card",
+            "config" : {
+              "repeat" : false,
+              "fields" : {
+                "card_title" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Title"
+                  }
+                },
+                "card_description" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Description"
+                  }
+                },
+                "card_amount" : {
+                  "type" : "Number",
+                  "config" : {
+                    "label" : "Amount"
+                  }
+                },
+                "card_currency" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Currency"
+                  }
+                },
+                "card_image0" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Gallery Image"
+                  }
+                },
+                "card_image1" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Gallery Image"
+                  }
+                },
+                "card_image2" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Gallery Image"
+                  }
+                },
+                "card_image3" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Gallery Image"
+                  }
+                },
+                "card_image4" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Gallery Image"
+                  }
+                },
+                "card_image5" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Gallery Image"
+                  }
+                }
+              }
+            }
+          },
+          "place_card" : {
+            "type" : "Group",
+            "fieldset" : "Place Card",
+            "config" : {
+              "repeat" : false,
+              "fields" : {
+                "card_title" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Title"
+                  }
+                },
+                "card_description" : {
+                  "type" : "Text",
+                  "config" : {
+                    "label" : "Description"
+                  }
+                },
+                "coordinates" : {
+                  "type" : "GeoPoint"
+                },
+                "card_image" : {
+                  "type" : "Image",
+                  "config" : {
+                    "placeholder" : "Image"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
